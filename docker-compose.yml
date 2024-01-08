@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  config-server:
+    image: config-server
+    ports:
+      - "8888:8888"  # Map the Eureka server port to the host
+    networks:
+      - app-network
+
+  eureka-server:
+    image: discovery-server
+    ports:
+      - "8761:8761"  # Map the Config server port to the host
+    networks:
+      - app-network
+    depends_on:
+      - config-server  # Ensure Config server starts after Eureka server
+
+networks:
+  app-network:
+    driver: bridge  # Use bridge network driver for containers
